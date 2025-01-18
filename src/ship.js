@@ -1,17 +1,28 @@
-class Ship{
-    constructor(name, length){
-        this.name = name;
-        this.length = length;
-        this.health = length;
+export default class Ship {
+  constructor(name, length) {
+    this.name = name;
+    this.length = length;
+    this.health = length;
+  }
+
+  hit() {
+    if (this.health === 0) {
+      return;
     }
 
-    hit(){
-        this.health--;
-    }
+    this.health--;
+  }
 
-    isSunk(){
-        return this.health <= 0;
-    }
+  hitCount() {
+    return this.health;
+  }
+
+  isSunk() {
+    return this.health <= 0;
+  }
+
+  length() {
+    return this.length;
+  }
 }
 
-module.exports = Ship;
