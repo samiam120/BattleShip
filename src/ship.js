@@ -1,4 +1,4 @@
-export default class Ship {
+class Ship {
   constructor(name, length) {
     this.name = name;
     this.length = length;
@@ -26,3 +26,10 @@ export default class Ship {
   }
 }
 
+export const ships = {
+  carrier: new Ship("carrier", 5),
+  battleship: new Ship("battleship", 4),
+  cruiser: new Ship("cruiser", 3),
+  submarine: new Ship("submarine", 3),
+  destroyer: new Ship("destroyer", 2),
+};
