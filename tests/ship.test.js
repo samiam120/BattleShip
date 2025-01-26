@@ -1,19 +1,21 @@
-import { ships } from "../src/ship.js";
+import { ships as shipList } from "../src/ship";
+
+const ships = shipList();
 
 describe("ship", () => {
 
     test("isSunk", () => {
-        const ship = ships.carrier;
-        expect(ship.isSunk()).toBe(false);
+        const carrier = ships.carrier;
+        expect(carrier.isSunk()).toBe(false);
     });
 
     test("hit", () => {
-        const ship = ships.carrier;
-        ship.hit();
-        expect(ship.health).toBe(4);
+        const carrier = ships.carrier;
+        carrier.hit();
+        expect(carrier.health).toBe(4);
     });
     test("isSunk after 5 hits", () => {
-        const ship =  ships.carrier;
+        const ship = ships.carrier;
         ship.hit();
         ship.hit();
         ship.hit();
