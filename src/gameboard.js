@@ -1,35 +1,58 @@
-import ships from "./ship";
-export default class Gameboard{
+import { ships as shipList } from "./ship.js";
+export default class Gameboard {
+  constructor() {
+    this.board = Array(10)
+      .fill("")
+      .map(() => Array(10).fill(""));
+    this.ships = shipList();
+  }
 
-    constructor(){
-        this.board = Array(10).fill("").map(() => Array(10).fill(""));
+  //coord is an object with x and y properties indicating the start of the ship {x, y}
+  //shipName must be  one of the following: carrier, battleship, cruiser, submarine, destroyer
+
+  placeShip(shipName, startCoord){
+    if (!this.ships[shipName]) {
+      console.error("invald ship name");
     }
 
-    //coord is an object with x and y properties indicating the start of the ship {x, y}
-    //shipName must be  one of the following: carrier, battleship, cruiser, submarine, destroyer
-    placeShip(shipName, coord){
-        if(ships.shipName === undefined){
-            throw new Error("Ship does not exist");
-        }
-        if(coord.x + ship.length > board.length || coord.y + ship.length > board[0].length){
-            return false;
-        }
-
-        const ship = ships[shipName];
-        for(let i = 0; i < ship.length; i++){
-            this.board[coord.x + i][coord.y] = ship.name;
-        }
-        return true;
+    if(startCoord.x >= this.board.length || startCoord.x < 0 || startCoord.y >= this.board[0].length || startCoord.y < 0){
+      throw new Error ("ship coordinates are off the board");
     }
 
+    const ship = this.ships[shipName];
+    const startX = startCoord.x;
+    const startY = startCoord.y;
 
-    //receive attack fubction that takes pair of coordinates,
-    //determines whether or not the attack hit a ship and then send the 
-    //hit function to the correct ship, or records coordinates of missed shot
+    if(ship.getOrientation()){
+      if(startCoord.y + ship.length() > this.board.length){
+        throw new Error ("ship coordinates are off the board");
+      }else{
+        for(let i = 0; i < ship.length(); i++){
+          this.board[startX][startY+i] = ship.name;
+        }
+      }
+    }else{
+      if(startCoord.x + ship.length() > this.board.length){
+        throw new Error ("ship coordinates are off the board");
+      }else{
+        for(let i = 0; i < ship.length(); i++){
+          this.board[startX+i][startY] = ship.name;
+        }
+      }
+    }
+    return true;
+  };
 
-    //gameboard should keep track of missed attacks to dislay properly
+  getBoard(){
+    return this.board;
+  };
 
-    //report whether or not all of their ships have been sunk
+  receiveAttack = (coord) => {
+    if (this.board[coord.x][coord.y] === "") {
+      this.board[coord.x][coord.y] = "miss";
+    } else {
+      this.board[coord.x][coord.y] = "hit";
 
-
+    }
+  };
 }
