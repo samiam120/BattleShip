@@ -47,12 +47,29 @@ export default class Gameboard {
     return this.board;
   };
 
-  receiveAttack = (coord) => {
-    if (this.board[coord.x][coord.y] === "") {
+  receiveAttack(coord){
+    if(this.board[coord.x][coord.y] == ""){
       this.board[coord.x][coord.y] = "miss";
-    } else {
-      this.board[coord.x][coord.y] = "hit";
-
+      return;
     }
+
+    const ship = this.ships[this.board[coord.x][coord.y]];
+    ship.hit();
   };
+
+  shipsAvailable(){
+    let count = 0;
+    for(let ship in this.ships){
+      if(!this.ships[ship].isSunk()){
+        count++;
+      }
+    }
+    return count;
+  }
+
+  gameOver(){
+    if(this.shipsAvailable() == 0){
+      return true;
+    }
+  }
 }
